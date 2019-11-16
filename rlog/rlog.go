@@ -1,0 +1,5 @@
+package rlog
+
+func init() {
+
+}
