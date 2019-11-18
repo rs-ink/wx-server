@@ -2,13 +2,16 @@ package database
 
 import (
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/rs-ink/rslog"
 	"wx-server/config"
+	"wx-server/rlog"
 	"xorm.io/xorm"
 )
 
 var db *xorm.Engine
 
-func Engin() *xorm.Engine {
+func Engine() *xorm.Engine {
 	return db
 }
 
@@ -24,12 +27,11 @@ func init() {
 		rslog.Error(err)
 	} else {
 		db = _db
-		db.SetLogger(rlog.GetLogger())
+		db.SetLogger(&rlog.XormLog{})
 		db.ShowSQL(true)
-		db.SetMaxIdleConns(config.Cfg().MustInt("db", "mysql.maxIdleCons", 10))
-		db.SetMaxOpenConns(config.Cfg().MustInt("db", "mysql.maxOpenCons", 200))
+		db.SetMaxIdleConns(config.Cfg().Mysql.MaxIdleConns)
+		db.SetMaxOpenConns(config.Cfg().Mysql.MaxOpenConns)
 		db.ShowExecTime(true)
-
 	}
 
 }
