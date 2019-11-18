@@ -1,50 +1,51 @@
 package wx
 
 import (
-	"fmt"
-	"net/http"
 	"time"
 )
 
 type Type int
+
 const (
 	_ Type = iota
 	OfficialAccount
 	MiniProgram
 )
 
-func (t Type)String() string {
+func (t Type) String() string {
 	switch t {
-	case OfficialAccount:return "公众号"
-	case MiniProgram:return "小程序"
+	case OfficialAccount:
+		return "公众号"
+	case MiniProgram:
+		return "小程序"
 	default:
 		return "未知"
 	}
 }
 
 type Config struct {
-	AppId string `json:"appId"`
+	AppId     string `json:"appId"`
 	AppSecret string `json:"appSecret"`
-	Type Type `json:"type"`
+	Type      Type   `json:"type"`
 }
 
 //WxBaseCustomer 微信基础用户标示
 type BaseCustomer struct {
-	AppId string `json:"appId"`
-	OpenId string `json:"openId"`
+	AppId   string `json:"appId"`
+	OpenId  string `json:"openId"`
 	UnionId string `json:"unitId"`
 }
 
 //WxBaseOther 授权获取的信息
 type BaseOther struct {
-	Gender           int       `json:"gender"`
-	City             string    `json:"city"`
-	SubscribeScene   string    `json:"subscribeScene"`
-	Subscribe        int       `json:"subscribe"`
-	SubscribeTime    time.Time `json:"subscribeTime"`
-	GroupId          int       `json:"groupId"`
-	Province         string    `json:"province"`
-	Country          string    `json:"country"`
+	Gender         int       `json:"gender"`
+	City           string    `json:"city"`
+	SubscribeScene string    `json:"subscribeScene"`
+	Subscribe      int       `json:"subscribe"`
+	SubscribeTime  time.Time `json:"subscribeTime"`
+	GroupId        int       `json:"groupId"`
+	Province       string    `json:"province"`
+	Country        string    `json:"country"`
 }
 
 type UserInfo struct {
@@ -77,6 +78,5 @@ type Session struct {
 	RefreshToken string `json:"refreshToken"`
 	OpenId       string `json:"openid"`
 	UnionId      string `json:"unionId"`
-	CreateTime time.Time
+	CreateTime   time.Time
 }
-

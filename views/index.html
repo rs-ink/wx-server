@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>嘟嘟拓客宝</title>
+</head>
+<body>
+<style>
+    :root {
+        --max-width: 600px;
+    }
+
+    .footer {
+        z-index: 1000;
+    }
+
+    .foot-base {
+        position: fixed;
+        bottom: 0;
+        text-align: center;
+        background-color: red;
+    }
+    img{
+        max-width: var(--max-width);
+    }
+    body {
+        display: flex;
+        max-width: var(--max-width);
+        justify-content: center;
+        flex: 1;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        align-content: center;
+        margin: 0 auto;
+    }
+
+    body > div:not(.footer) {
+        border: red solid 1px;
+    }
+
+    @media screen and (max-width: 600px) {
+        .foot {
+            width: 50%;
+        }
+
+        body > div:not(.footer) {
+            width: 100%;
+            background-color: green;
+        }
+
+        .foot:nth-child(odd) {
+            left: 0;
+        }
+
+        .foot:nth-child(even) {
+            left: 50%;
+        }
+
+        .foot:only-child {
+            width: 100% !important;
+        }
+    }
+
+    @media screen and (min-width: 600px) {
+        .foot {
+            width: calc(var(--max-width) / 2);
+        }
+
+        body > div {
+            margin: 0;
+        }
+
+        body > div:not(.footer) {
+            width: var(--max-width);
+            background-color: #803128;
+        }
+
+        .foot:nth-child(odd) {
+            left: calc((100% - var(--max-width)) / 2);
+        }
+
+        .foot:nth-child(even) {
+            left: calc((100% - var(--max-width)) / 2 + var(--max-width) / 2);
+        }
+
+        .foot:only-child {
+            width: var(--max-width) !important;
+        }
+    }
+</style>
+<div>
+    <img src="https://duduvideo.oss-cn-shanghai.aliyuncs.com/image/welcome.jpg"/>
+</div>
+
+</body>
+</html>

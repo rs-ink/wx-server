@@ -5,16 +5,16 @@ import (
 	"wx-server/rtype/wx"
 )
 
-func init()  {
+func init() {
 	err := db.CreateTables(&Customer{})
 	rlog.CheckShowError(err)
 }
 
 type Customer struct {
-	ID `xorm:"extends"`
-	BaseTime `xorm:"extends"`
+	ID              `xorm:"extends"`
+	BaseTime        `xorm:"extends"`
 	wx.BaseCustomer `xorm:"extends"`
-	wx.BaseOther `xorm:"extends"`
+	wx.BaseOther    `xorm:"extends"`
 }
 
 func (c Customer) TableName() string {

@@ -5,58 +5,62 @@ import (
 	"xorm.io/core"
 )
 
-type XormLog struct {
+func NewRxOrmLog() *RXOrmLog {
+	return &RXOrmLog{}
+}
+
+type RXOrmLog struct {
 	isDebug  bool
 	logLevel core.LogLevel
 	showSQL  bool
 }
 
-func (xl XormLog) Debug(v ...interface{}) {
+func (xl RXOrmLog) Debug(v ...interface{}) {
 	rslog.Out(1, rslog.LevelDEBUG, v)
 }
 
-func (xl XormLog) Debugf(format string, v ...interface{}) {
-	rslog.OutF(1,rslog.LevelDEBUG,format,v...)
+func (xl RXOrmLog) Debugf(format string, v ...interface{}) {
+	rslog.OutF(1, rslog.LevelDEBUG, format, v...)
 }
 
-func (xl XormLog) Error(v ...interface{}) {
+func (xl RXOrmLog) Error(v ...interface{}) {
 	rslog.Out(1, rslog.LevelERROR, v)
 }
 
-func (xl XormLog) Errorf(format string, v ...interface{}) {
-	rslog.OutF(1,rslog.LevelERROR,format,v...)
+func (xl RXOrmLog) Errorf(format string, v ...interface{}) {
+	rslog.OutF(1, rslog.LevelERROR, format, v...)
 }
 
-func (xl XormLog) Info(v ...interface{}) {
+func (xl RXOrmLog) Info(v ...interface{}) {
 	rslog.Out(1, rslog.LevelINFO, v)
 }
 
-func (xl XormLog) Infof(format string, v ...interface{}) {
-	rslog.OutF(1,rslog.LevelINFO,format,v...)
+func (xl RXOrmLog) Infof(format string, v ...interface{}) {
+	rslog.OutF(1, rslog.LevelINFO, format, v...)
 }
 
-func (xl XormLog) Warn(v ...interface{}) {
+func (xl RXOrmLog) Warn(v ...interface{}) {
 	rslog.Out(1, rslog.LevelWARN, v)
 }
 
-func (xl XormLog) Warnf(format string, v ...interface{}) {
-	rslog.OutF(1,rslog.LevelWARN,format,v...)
+func (xl RXOrmLog) Warnf(format string, v ...interface{}) {
+	rslog.OutF(1, rslog.LevelWARN, format, v...)
 }
 
-func (xl XormLog) Level() core.LogLevel {
+func (xl RXOrmLog) Level() core.LogLevel {
 	return xl.logLevel
 }
 
-func (xl *XormLog) SetLevel(l core.LogLevel) {
+func (xl *RXOrmLog) SetLevel(l core.LogLevel) {
 	xl.logLevel = l
 }
 
-func (xl *XormLog) ShowSQL(show ...bool) {
+func (xl *RXOrmLog) ShowSQL(show ...bool) {
 	if len(show) > 0 {
 		xl.showSQL = show[0]
 	}
 }
 
-func (xl XormLog) IsShowSQL() bool {
+func (xl RXOrmLog) IsShowSQL() bool {
 	return xl.showSQL
 }

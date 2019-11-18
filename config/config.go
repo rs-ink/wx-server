@@ -12,16 +12,18 @@ import (
 
 type Config struct {
 	Web struct {
-		Port int `yaml:"port,omitempty"`
+		Port   int    `yaml:"port,omitempty"`
+		Views  string `yaml:"views"`
+		Assets string `yaml:"assets"`
 	}
 	Mysql struct {
-		User string `yaml:"user"`
-		Pwd  string `yaml:"pwd"`
-		Port int    `yaml:"port"`
-		Host string `yaml:"host"`
-		Db   string `yaml:"db"`
-		MaxIdleConns int `yaml:"maxIdleConns"`
-		MaxOpenConns int `yaml:"maxOpenConns"`
+		User         string `yaml:"user"`
+		Pwd          string `yaml:"pwd"`
+		Port         int    `yaml:"port"`
+		Host         string `yaml:"host"`
+		Db           string `yaml:"db"`
+		MaxIdleConns int    `yaml:"maxIdleConns"`
+		MaxOpenConns int    `yaml:"maxOpenConns"`
 	}
 	Redis struct {
 		Host string `yaml:"host"`
@@ -29,11 +31,11 @@ type Config struct {
 		Port int    `yaml:"port"`
 		Db   int    `yaml:"db"`
 	}
-	Wxs struct{
-		AppId string `yaml:"appId"`
+	Wxs struct {
+		AppId     string `yaml:"appId"`
 		AppSecret string `yaml:"appSecret"`
 	}
-	WxMap struct{
+	WxMap struct {
 		Key string `yaml:"key"`
 	}
 }
@@ -43,9 +45,9 @@ var configFile string
 var conf Config
 
 func init() {
-	if strings.Contains(os.Args[0],"__Test"){
+	if strings.Contains(os.Args[0], "__Test") {
 		flag.StringVar(&configFile, "f", "./../conf.yaml", "配置文件")
-	}else{
+	} else {
 		flag.StringVar(&configFile, "f", "./conf.yaml", "配置文件")
 	}
 

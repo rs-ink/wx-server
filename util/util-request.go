@@ -7,7 +7,7 @@ import (
 )
 
 func GetRequestHost(ctx dotweb.Context) string {
-	return fmt.Sprintf("%v://%v", strings.Split(strings.ToLower(ctx.Request().Proto), "/")[0], ctx.Request().Host)
+	return fmt.Sprintf("%v://%v", strings.Split(GetProto(ctx), "/")[0], ctx.Request().Host)
 }
 
 func GetRealClientIP(ctx dotweb.Context) string {
@@ -17,4 +17,13 @@ func GetRealClientIP(ctx dotweb.Context) string {
 	} else {
 		return ctx.RemoteIP()
 	}
+}
+
+func GetProto(ctx dotweb.Context) (proto string) {
+	proto = ctx.Request().QueryHeader("X-Forwarded-Proto")
+	if proto == "" {
+		proto = ctx.Request().Proto
+	}
+	proto = strings.ToLower(proto)
+	return
 }
