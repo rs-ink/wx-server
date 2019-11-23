@@ -35,8 +35,23 @@ type Config struct {
 		AppId     string `yaml:"appId"`
 		AppSecret string `yaml:"appSecret"`
 	}
+	Wxm struct {
+		AppId     string `yaml:"appId"`
+		AppSecret string `yaml:"appSecret"`
+	}
 	WxMap struct {
 		Key string `yaml:"key"`
+	}
+	Oss struct {
+		Domain          string `yaml:"domain"`
+		Bucket          string `yaml:"bucket"`
+		RegionId        string `yaml:"regionId"`
+		AccessKeyId     string `yaml:"accessKeyId"`
+		AccessKeySecret string `yaml:"accessKeySecret"`
+		RoleArn         string `yaml:"roleArn"`
+
+		DirectAccessKeyId     string `yaml:"directAccessKeyId"`
+		DirectAccessKeySecret string `yaml:"directAccessKeySecret"`
 	}
 }
 
@@ -50,7 +65,7 @@ func init() {
 	} else {
 		flag.StringVar(&configFile, "f", "./conf.yaml", "配置文件")
 	}
-
+	flag.Parse()
 	f, err := ioutil.ReadFile(configFile)
 	if err != nil {
 		panic(configFile + " 不存在")

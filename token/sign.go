@@ -16,8 +16,8 @@ import (
 	"wx-server/util"
 )
 
-func JsSignature(url string,appId ...string) (sign wx.JsSignature) {
-	wxs := rtype.GetWxConfig(appId...)
+func JsSignature(url string, appId ...string) (sign wx.JsSignature) {
+	wxs := rtype.GetWxsConfig(appId...)
 	sign.AppId = wxs.AppId
 	sign.SignType = "SHA1"
 	sign.NonceStr = util.CreateRandomString(32)
@@ -28,12 +28,11 @@ func JsSignature(url string,appId ...string) (sign wx.JsSignature) {
 	return
 }
 
-
-func deCrypt(mis wx.Session, data wx.EncryptedData,charsets ...string) (result string, err error) {
-	 charset := "utf-8"
-	 if len(charsets)>0{
-	 	charset=charsets[0]
-	 }
+func DeCrypt(mis wx.Session, data wx.EncryptedData, charsets ...string) (result string, err error) {
+	charset := "utf-8"
+	if len(charsets) > 0 {
+		charset = charsets[0]
+	}
 	defer func() {
 		if e := recover(); e != nil {
 			rlog.Error(e)

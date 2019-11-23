@@ -14,9 +14,10 @@ import (
 	"wx-server/rtype/wx"
 	"wx-server/util"
 )
+
 var client http.Client
 
-func init()  {
+func init() {
 	tr := &http.Transport{
 		//Proxy:           func(r *http.Request) (*url.URL, error) { return url.Parse("http://127.0.0.1:8888") },
 		TLSClientConfig: &tls.Config{
@@ -33,6 +34,7 @@ func init()  {
 		Jar:       jar,
 	}
 }
+
 const WxApiServer = "https://api.weixin.qq.com"
 const WxCgiApi = WxApiServer + "/cgi-bin"
 const WxSnsApi = WxApiServer + "/sns"
@@ -40,8 +42,8 @@ const WxSnsApi = WxApiServer + "/sns"
 var tokenMap sync.Map
 
 func GetAccessToken(appId ...string) wx.AccessToken {
-	conf := rtype.GetWxConfig(appId...)
-	tk,ok:=tokenMap.Load(conf)
+	conf := rtype.GetWxsConfig(appId...)
+	tk, ok := tokenMap.Load(conf)
 	if !ok || tk.(wx.AccessToken).CreateTime.Unix()+tk.(wx.AccessToken).ExpiresIn <= time.Now().Unix() {
 		url := fmt.Sprintf("%s/token?grant_type=client_credential&appid=%s&secret=%s", WxCgiApi, conf.AppId, conf.AppSecret)
 		resp, err := client.Get(url)
@@ -54,7 +56,7 @@ func GetAccessToken(appId ...string) wx.AccessToken {
 				if err == nil {
 					if token.ErrCode == 0 {
 						token.CreateTime = time.Now()
-						tk,ok = tokenMap.LoadOrStore(conf, token)
+						tk, ok = tokenMap.LoadOrStore(conf, token)
 					} else {
 						rlog.Error(token)
 					}
@@ -76,9 +78,9 @@ var ticketMap sync.Map
 
 func GetTicket(appId ...string) wx.Ticket {
 	accessToken := GetAccessToken(appId...)
-	conf := rtype.GetWxConfig(appId...)
-	tk,ok := ticketMap.Load(conf)
-	tick:=tk.(wx.Ticket)
+	conf := rtype.GetWxsConfig(appId...)
+	tk, ok := ticketMap.Load(conf)
+	tick := tk.(wx.Ticket)
 	if !ok || tick.CreateTime.Unix()+tick.ExpiresIn <= time.Now().Unix() {
 		url := fmt.Sprintf("%s/ticket/getticket?access_token=%s&type=jsapi", WxCgiApi, accessToken.AccessToken)
 		resp, err := client.Get(url)
@@ -90,7 +92,7 @@ func GetTicket(appId ...string) wx.Ticket {
 			rlog.CheckShowError(err)
 			if tick.ErrCode == 0 {
 				tick.CreateTime = time.Now()
-				tokenMap.LoadOrStore(conf,tick)
+				tokenMap.LoadOrStore(conf, tick)
 				return tick
 			}
 		} else {

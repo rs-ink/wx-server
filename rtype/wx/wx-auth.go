@@ -9,9 +9,9 @@ type Error struct {
 
 type AccessToken struct {
 	Error
-	ExpiresIn   int64       `json:"expires_in"`
-	AccessToken string `json:"access_token"`
-	CreateTime  time.Time   `json:"createTime"`
+	ExpiresIn   int64     `json:"expires_in"`
+	AccessToken string    `json:"access_token"`
+	CreateTime  time.Time `json:"createTime"`
 }
 type Ticket struct {
 	Error

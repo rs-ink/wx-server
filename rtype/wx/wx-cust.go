@@ -1,10 +1,16 @@
 package wx
 
 import (
+	"encoding/gob"
 	"time"
 )
 
 type Type int
+
+func init() {
+	gob.Register(Session{})
+	gob.Register(UserInfo{})
+}
 
 const (
 	_ Type = iota
@@ -71,6 +77,7 @@ type UserInfo struct {
 type Session struct {
 	Error
 	AppId        string `json:"appId"`
+	WxType       Type   `json:"type"`
 	SessionKey   string `json:"session_key"`
 	AccessToken  string `json:"access_token"`
 	Expires      int    `json:"expires_in"`

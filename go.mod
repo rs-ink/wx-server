@@ -3,6 +3,7 @@ module wx-server
 go 1.13
 
 require (
+	github.com/aliyun/alibaba-cloud-sdk-go v0.0.0-20191115143122-2863a2c99a71
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/boombuler/barcode v1.0.0
 	github.com/devfeel/dotweb v1.7.2

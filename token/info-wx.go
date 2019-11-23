@@ -35,42 +35,53 @@ func TransferWxLocation(lat, lng float64) (gpsLat, gpsLng float64) {
 	return 0, 0
 }
 
-func CheckRefreshToken(session *wx.Session,appId ...string)  {
-	conf := rtype.GetWxConfig(appId...)
-	if session.CreateTime.Unix()+int64(session.Expires) <= time.Now().Unix(){
-		resp,err := http.DefaultClient.Get(fmt.Sprintf("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%v&grant_type=refresh_token&refresh_token=%v",conf.AppId,session.RefreshToken))
-		if err !=nil{
+func CheckRefreshToken(session *wx.Session, appId ...string) {
+	conf := rtype.GetWxsConfig(appId...)
+	if session.CreateTime.Unix()+int64(session.Expires) <= time.Now().Unix() {
+		resp, err := http.DefaultClient.Get(fmt.Sprintf("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%v&grant_type=refresh_token&refresh_token=%v", conf.AppId, session.RefreshToken))
+		if err != nil {
 			rlog.Error(err)
-		}else{
+		} else {
 			defer resp.Body.Close()
-			data,_ := ioutil.ReadAll(resp.Body)
+			data, _ := ioutil.ReadAll(resp.Body)
 			_ = json.Unmarshal(data, session)
 		}
 	}
 }
 
-func GetWxSession(code string,appId ...string) (mis wx.Session, err error) {
-	wxc := rtype.GetWxConfig(appId...)
+func GetWxSession(code string, wxc wx.Config) (mis wx.Session, err error) {
 	var resp *http.Response
-	if wxc.Type == wx.MiniProgram{
+	if wxc.Type == wx.MiniProgram {
 		resp, err = client.Get(fmt.Sprintf("%s/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", WxSnsApi, wxc.AppId, wxc.AppSecret, code))
-	}else{
+	} else {
 		resp, err = client.Get(fmt.Sprintf("%s/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", WxSnsApi, wxc.AppId, wxc.AppSecret, code))
 	}
 	if err == nil {
 		defer resp.Body.Close()
 		assets12, err := ioutil.ReadAll(resp.Body)
 		if err == nil {
+			rlog.Warn(wxc)
 			rlog.Warn("微信解析返回：：", string(assets12))
 			err = json.Unmarshal(assets12, &mis)
-			mis.CreateTime=time.Now()
+			mis.CreateTime = time.Now()
+			mis.AppId = wxc.AppId
+			mis.WxType = wxc.Type
 		}
 	}
 	return
 }
 
-//网页体验授权
-func GetWxInfoBySnsOpenId(wxs wx.Session) (mis wx.UserInfo, err error) {
+func GetWxInfo(wxConfig wx.Config, wxs wx.Session) (wxInfo wx.UserInfo, err error) {
+	wxInfo, err = getWxInfoByOpenId(wxs.OpenId, wxConfig.AppId)
+	rlog.WarnF("%+v", wxInfo)
+	if err == nil && wxInfo.Subscribe == 0 {
+		wxInfo, err = getWxInfoBySnsOpenId(wxs)
+	}
+	return
+}
+
+//网页授权的用户信息
+func getWxInfoBySnsOpenId(wxs wx.Session) (mis wx.UserInfo, err error) {
 	var resp *http.Response
 	var data []byte
 	resp, err = client.Get(fmt.Sprintf("%v/userinfo?access_token=%s&openid=%s&lang=zh_CN", WxSnsApi, wxs.AccessToken, wxs.OpenId))
@@ -84,7 +95,7 @@ func GetWxInfoBySnsOpenId(wxs wx.Session) (mis wx.UserInfo, err error) {
 }
 
 //获取微信用户详细信息
-func GetWxInfoByOpenId(openId string,appId ...string) (mis wx.UserInfo, err error) {
+func getWxInfoByOpenId(openId string, appId ...string) (mis wx.UserInfo, err error) {
 	at := GetAccessToken(appId...)
 	var resp *http.Response
 	var data []byte

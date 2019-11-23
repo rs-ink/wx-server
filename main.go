@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/devfeel/dotweb"
+	"github.com/devfeel/dotweb/session"
 	"log"
 	"wx-server/config"
 	"wx-server/rlog"
@@ -18,6 +20,11 @@ func main() {
 	app.SetLogger(rlog.NewRAppLog())
 	app.HttpServer.SetEnabledSession(true)
 	app.HttpServer.SetEnabledAutoHEAD(true)
+	sessionConfig := session.NewDefaultRedisConfig(fmt.Sprintf("redis://%v:%d/%d", config.Cfg().Redis.Host, config.Cfg().Redis.Port, config.Cfg().Redis.Db))
+	sessionConfig.CookieName = "sid"
+	sessionConfig.Maxlifetime = int64(60 * 30 * 10)
+	app.HttpServer.SetSessionConfig(sessionConfig)
+	app.HttpServer.InitSessionManager()
 	//TODO 跨域处理
 	app.Use(util.NewSimpleCROS())
 	app.HttpServer.SetEnabledAutoOPTIONS(true)

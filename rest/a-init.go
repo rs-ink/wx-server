@@ -2,9 +2,14 @@ package rest
 
 import (
 	"github.com/devfeel/dotweb"
-	"wx-server/middleware"
 )
 
+func init() {
+
+}
+
+//TODO /rest
 func InitRestRouter(group dotweb.Group) {
-	initWxRest(group.Group("/wx", middleware.NewWxLoginMiddleware()))
+	initWxmRest(group)
+	initRestOssRouter(group)
 }
