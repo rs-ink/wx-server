@@ -1,0 +1,5 @@
+package wx
+
+func Sing() {
+
+}

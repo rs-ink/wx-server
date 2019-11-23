@@ -1,7 +1,9 @@
 package notify
 
 import (
+	"encoding/xml"
 	"github.com/devfeel/dotweb"
+	"wx-server/rlog"
 	"wx-server/rtype"
 )
 
@@ -29,5 +31,14 @@ type WxNotifyMsg struct {
 }
 
 func wxNotify() (path string, handle dotweb.HttpHandle) {
+	path = "/wx"
+	handle = func(ctx dotweb.Context) error {
+		var msg WxNotifyMsg
+		data := ctx.Request().PostBody()
+		_ = xml.Unmarshal(data, &msg)
+		rlog.Warn(msg)
+
+		return ctx.WriteBlob("", data)
+	}
 	return
 }
