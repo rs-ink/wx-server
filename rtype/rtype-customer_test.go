@@ -8,8 +8,7 @@ import (
 
 func TestShowCustomer(t *testing.T) {
 	_, _ = db.Insert(Customer{
-		ID:           ID{},
-		BaseTime:     NewBaseTime(),
+
 		BaseCustomer: wx.BaseCustomer{},
 		BaseOther:    wx.BaseOther{},
 	})

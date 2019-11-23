@@ -35,6 +35,7 @@ func wxNotify() (path string, handle dotweb.HttpHandle) {
 	handle = func(ctx dotweb.Context) error {
 		var msg WxNotifyMsg
 		data := ctx.Request().PostBody()
+		rlog.WarnF("%s", data)
 		_ = xml.Unmarshal(data, &msg)
 		rlog.Warn(msg)
 

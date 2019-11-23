@@ -65,7 +65,6 @@ func init() {
 	} else {
 		flag.StringVar(&configFile, "f", "./conf.yaml", "配置文件")
 	}
-	flag.Parse()
 	f, err := ioutil.ReadFile(configFile)
 	if err != nil {
 		panic(configFile + " 不存在")
