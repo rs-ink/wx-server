@@ -2,6 +2,7 @@ package rtype
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"time"
 )
 
@@ -48,6 +49,16 @@ func (t RDateTime) MarshalJSON() ([]byte, error) {
 }
 
 type RDateTimeSecond time.Time
+
+func (rt *RDateTimeSecond) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var sec int64
+	err := d.DecodeElement(&sec, &start)
+	if err != nil {
+		return err
+	}
+	*rt = RDateTimeSecond(time.Unix(sec, 0))
+	return nil
+}
 
 func (rt *RDateTimeSecond) UnmarshalJSON(data []byte) error {
 	var sec int64
