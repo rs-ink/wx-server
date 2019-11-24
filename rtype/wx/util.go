@@ -1,5 +1,1 @@
 package wx
-
-func Sing() {
-
-}
