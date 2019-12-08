@@ -26,7 +26,7 @@ func info() (path string, handle dotweb.HttpHandle) {
 		rlog.Warn(string(ctx.Request().PostBody()))
 		_ = ctx.BindJsonBody(&param)
 		appSession := middleware.GetAppSession(ctx)
-		result, err := token.DeCrypt(appSession.WxSession, param.EncryptedData)
+		result, err := token.Decrypt(appSession.WxSession, param.EncryptedData)
 		rlog.Warn(result, err)
 
 		return ctx.WriteJson(rtype.Success())

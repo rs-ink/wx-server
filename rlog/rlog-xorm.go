@@ -5,18 +5,23 @@ import (
 	"xorm.io/core"
 )
 
-func NewRxOrmLog() *RXOrmLog {
-	return &RXOrmLog{}
+func NewRxOrmLog() (logger *RXOrmLog) {
+	logger = &RXOrmLog{
+		log: rslog.NewRsLog(false),
+	}
+	logger.log.SetProjectName(ProjectName)
+	return
 }
 
 type RXOrmLog struct {
+	log      *rslog.RsLog
 	isDebug  bool
 	logLevel core.LogLevel
 	showSQL  bool
 }
 
 func (xl RXOrmLog) Debug(v ...interface{}) {
-	rslog.Out(1, rslog.LevelDEBUG, v)
+	xl.log.Out(1, rslog.LevelDEBUG, v)
 }
 
 func (xl RXOrmLog) Debugf(format string, v ...interface{}) {
@@ -24,27 +29,27 @@ func (xl RXOrmLog) Debugf(format string, v ...interface{}) {
 }
 
 func (xl RXOrmLog) Error(v ...interface{}) {
-	rslog.Out(1, rslog.LevelERROR, v)
+	xl.log.Out(1, rslog.LevelERROR, v)
 }
 
 func (xl RXOrmLog) Errorf(format string, v ...interface{}) {
-	rslog.OutF(1, rslog.LevelERROR, format, v...)
+	xl.log.OutF(1, rslog.LevelERROR, format, v...)
 }
 
 func (xl RXOrmLog) Info(v ...interface{}) {
-	rslog.Out(1, rslog.LevelINFO, v)
+	xl.log.Out(1, rslog.LevelINFO, v)
 }
 
 func (xl RXOrmLog) Infof(format string, v ...interface{}) {
-	rslog.OutF(1, rslog.LevelINFO, format, v...)
+	xl.log.OutF(1, rslog.LevelINFO, format, v...)
 }
 
 func (xl RXOrmLog) Warn(v ...interface{}) {
-	rslog.Out(1, rslog.LevelWARN, v)
+	xl.log.Out(1, rslog.LevelWARN, v)
 }
 
 func (xl RXOrmLog) Warnf(format string, v ...interface{}) {
-	rslog.OutF(1, rslog.LevelWARN, format, v...)
+	xl.log.OutF(1, rslog.LevelWARN, format, v...)
 }
 
 func (xl RXOrmLog) Level() core.LogLevel {

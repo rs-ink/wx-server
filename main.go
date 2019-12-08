@@ -17,7 +17,9 @@ func init() {
 
 func main() {
 	app := dotweb.New()
+	app.SetDevelopmentMode()
 	app.SetLogger(rlog.NewRAppLog())
+	//app.SetEnabledLog(true)
 	app.HttpServer.SetEnabledSession(true)
 	app.HttpServer.SetEnabledAutoHEAD(true)
 	sessionConfig := session.NewDefaultRedisConfig(fmt.Sprintf("redis://%v:%d/%d", config.Cfg().Redis.Host, config.Cfg().Redis.Port, config.Cfg().Redis.Db))
@@ -29,6 +31,8 @@ func main() {
 	app.Use(util.NewSimpleCROS())
 	app.HttpServer.SetEnabledAutoOPTIONS(true)
 	app.HttpServer.SetEnabledIgnoreFavicon(true)
+
+	app.UsePlugin()
 
 	app.HttpServer.Renderer().SetTemplatePath(config.Cfg().Web.Views)
 	app.HttpServer.ServerFile("/assets/*", config.Cfg().Web.Assets)

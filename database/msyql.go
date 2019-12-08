@@ -27,7 +27,7 @@ func init() {
 		rslog.Error(err)
 	} else {
 		db = _db
-		db.SetLogger(&rlog.RXOrmLog{})
+		db.SetLogger(rlog.NewRxOrmLog())
 		db.ShowSQL(true)
 		db.SetMaxIdleConns(config.Cfg().Mysql.MaxIdleConns)
 		db.SetMaxOpenConns(config.Cfg().Mysql.MaxOpenConns)

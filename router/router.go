@@ -23,4 +23,8 @@ func InitRoute(server *dotweb.HttpServer) {
 	})
 	notify.InitNotifyRouter(server.Group("/notify"))
 	rest.InitRestRouter(server.Group("/rest"))
+
+	server.GET("/auth", func(ctx dotweb.Context) error {
+		return ctx.View("auth.html")
+	})
 }

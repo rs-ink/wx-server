@@ -2,11 +2,6 @@ package wx
 
 import "time"
 
-type Error struct {
-	ErrCode int    `json:"errcode"`
-	ErrMsg  string `json:"errmsg"`
-}
-
 type AccessToken struct {
 	Error
 	ExpiresIn   int64     `json:"expires_in"`

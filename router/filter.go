@@ -15,6 +15,7 @@ var wxFilterMap map[string]string
 func init() {
 	wxFilterMap = make(map[string]string)
 	wxFilterMap["MP_verify_Mg3NtQxQFCNXqIAZ.txt"] = "Mg3NtQxQFCNXqIAZ"
+	wxFilterMap["6878899836.txt"] = "1d803a5404c283bb0e73d9d5884e19a9"
 }
 
 func wxFilter() *dotweb.HttpModule {
@@ -22,7 +23,7 @@ func wxFilter() *dotweb.HttpModule {
 		Name: "wx-filter",
 		OnBeginRequest: func(ctx dotweb.Context) {
 			uri := ctx.Request().Url()
-			if v, ok := wxFilterMap["/"+uri]; ok {
+			if v, ok := wxFilterMap[uri[1:]]; ok {
 				_ = ctx.WriteString(v)
 				ctx.End()
 			}
@@ -30,21 +31,31 @@ func wxFilter() *dotweb.HttpModule {
 	}
 }
 
+//func wxNotifyFilter() *dotweb.HttpModule {
+//	mid := middleware.NewWxNotifyMsgMiddleware()
+//	return &dotweb.HttpModule{
+//		Name:"wx-notify1",
+//		OnBeginRequest: func(ctx dotweb.Context) {
+//			_ = mid.Handle(ctx)
+//		},
+//	}
+//}
+
 func NotFoundHandler(ctx dotweb.Context) {
-	if !ctx.IsEnd() {
-		rlog.Info("===================================")
-		rlog.Info("来源IP：", util.GetRealClientIP(ctx))
-		rlog.Info(ctx.Request().QueryHeader("X-Forwarded-For"))
-		rlog.Info(ctx.Request().Method, ctx.Request().Url(), " ContentType:", ctx.Request().ContentType(), "  Referer:", ctx.Request().Referer())
-		rlog.Info(string(ctx.Request().PostBody()))
-		if strings.HasPrefix(ctx.Request().Url(), "/rest") {
-			_ = ctx.WriteJson(rtype.ErrCodeSystemError.Result().SetMsg("接口不存在"))
-		} else {
-			_ = ctx.Redirect(301, "/")
-		}
-		rlog.Info("===================================")
-		ctx.End()
+	//if !ctx.IsEnd() {
+	rlog.Info("===================================")
+	rlog.Info("来源IP：", util.GetRealClientIP(ctx))
+	rlog.Info(ctx.Request().QueryHeader("X-Forwarded-For"))
+	rlog.Info(ctx.Request().Method, ctx.Request().Url(), " ContentType:", ctx.Request().ContentType(), "  Referer:", ctx.Request().Referer())
+	rlog.Info(string(ctx.Request().PostBody()))
+	if strings.HasPrefix(ctx.Request().Url(), "/rest") {
+		_ = ctx.WriteJson(rtype.ErrCodeSystemError.Result().SetMsg("接口不存在"))
+	} else {
+		_ = ctx.Redirect(301, "/")
 	}
+	rlog.Info("===================================")
+	ctx.End()
+	//}
 }
 
 func MethodNotAllowedHandler(ctx dotweb.Context) {

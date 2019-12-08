@@ -5,10 +5,20 @@ import (
 	"crypto/rand"
 	"encoding/json"
 	"math/big"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
 )
+
+func IsNumber(str string) bool {
+	if strings.HasPrefix(str, "0") {
+		return false
+	}
+
+	ok, _ := regexp.MatchString("^[0-9]*$", str)
+	return ok
+}
 
 func ToJsonData(v interface{}) string {
 	data, _ := json.Marshal(v)

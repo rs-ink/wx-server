@@ -39,6 +39,10 @@ type Config struct {
 		AppId     string `yaml:"appId"`
 		AppSecret string `yaml:"appSecret"`
 	}
+	WxOpen struct {
+		AppId     string `yaml:"appId"`
+		AppSecret string `yaml:"appSecret"`
+	}
 	WxMap struct {
 		Key string `yaml:"key"`
 	}
@@ -73,7 +77,7 @@ func init() {
 	if err != nil {
 		fmt.Println("解析错误")
 	}
-	rlog.Info(conf)
+	rlog.InfoF("%+v", conf)
 }
 
 func Cfg() Config {

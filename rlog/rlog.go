@@ -3,9 +3,13 @@ package rlog
 import (
 	"github.com/rs-ink/rslog"
 )
-func init()  {
+
+const ProjectName = "wx-server"
+
+func init() {
 	SetProjectName("wx-server")
 }
+
 func CheckShowError(err error) {
 	if err != nil {
 		rslog.Out(1, rslog.LevelERROR, err)

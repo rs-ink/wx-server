@@ -1,4 +1,4 @@
-package rtype
+package base
 
 import (
 	"encoding/json"
@@ -12,6 +12,13 @@ const rsDateTimeFormat string = "2006-01-02 15:04:05"
 
 type RDate time.Time
 
+func (l RDate) String() string {
+	return l.Time().Format(rsDateFormat)
+}
+
+func (l RDate) Time() time.Time {
+	return time.Time(l)
+}
 func (l RDate) MarshalJSON() ([]byte, error) {
 	format := time.Time(l).Format(rsDateFormat)
 	return json.Marshal(format)
@@ -31,6 +38,12 @@ func (l *RDate) UnmarshalJSON(b []byte) error {
 
 type RDateTime time.Time
 
+func (t RDateTime) String() string {
+	return t.Time().Format(rsDateTimeFormat)
+}
+func (t RDateTime) Time() time.Time {
+	return time.Time(t)
+}
 func (t *RDateTime) UnmarshalJSON(b []byte) error {
 	var aa string
 	err := json.Unmarshal(b, &aa)
@@ -49,6 +62,10 @@ func (t RDateTime) MarshalJSON() ([]byte, error) {
 }
 
 type RDateTimeSecond time.Time
+
+func (rt RDateTimeSecond) String() string {
+	return rt.Time().Format(rsDateTimeFormat)
+}
 
 func (rt *RDateTimeSecond) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	var sec int64
@@ -74,4 +91,8 @@ func (rt *RDateTimeSecond) UnmarshalJSON(data []byte) error {
 func (rt RDateTimeSecond) MarshalJSON() ([]byte, error) {
 	t := time.Time(rt)
 	return json.Marshal(t.Unix())
+}
+
+func (rt RDateTimeSecond) Time() time.Time {
+	return time.Time(rt)
 }

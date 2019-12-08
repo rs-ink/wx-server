@@ -2,15 +2,36 @@ package util
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/devfeel/dotweb"
 	"html/template"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 	"wx-server/rlog"
 	"wx-server/rtype"
 )
+
+func BindUrlParams(uri string, value interface{}) error {
+	if strings.Contains(uri, "?") {
+		vs, _ := url.ParseQuery(strings.Split(uri, "?")[1])
+		ss := make(map[string]interface{})
+		for k, v := range vs {
+			value := v[len(v)-1]
+			if IsNumber(value) {
+				num, _ := strconv.ParseInt(value, 10, 64)
+				ss[k] = num
+			} else {
+				ss[k] = value
+			}
+		}
+		data, _ := json.Marshal(ss)
+		return json.Unmarshal(data, value)
+	}
+	return nil
+}
 
 func GetRequestHost(ctx dotweb.Context) string {
 	return fmt.Sprintf("%v://%v", strings.Split(GetProto(ctx), "/")[0], ctx.Request().Host)

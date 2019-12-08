@@ -9,7 +9,7 @@ require (
 	github.com/devfeel/dotweb v1.7.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
-	github.com/rs-ink/rslog v0.0.3
+	github.com/rs-ink/rslog v0.0.6
 	github.com/sony/sonyflake v1.0.0
 	github.com/tidwall/gjson v1.3.4
 	gopkg.in/yaml.v2 v2.2.5
