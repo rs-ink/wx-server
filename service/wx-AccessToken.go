@@ -1,4 +1,4 @@
-package token
+package service
 
 import (
 	"encoding/json"
@@ -7,17 +7,16 @@ import (
 	"sync"
 	"time"
 	"wx-server/rlog"
-	"wx-server/rtype"
 	"wx-server/rtype/wx"
 )
 
 var tokenMap sync.Map
 
 func GetAccessToken(appId ...string) wx.AccessToken {
-	conf := rtype.GetWxsConfig(appId...)
+	conf := wx.GetWxsConfig(appId...)
 	tk, ok := tokenMap.Load(conf)
 	if !ok || tk.(wx.AccessToken).CreateTime.Unix()+tk.(wx.AccessToken).ExpiresIn <= time.Now().Unix() {
-		url := fmt.Sprintf("%s/token?grant_type=client_credential&appid=%s&secret=%s", WxCgiApi, conf.AppId, conf.AppSecret)
+		url := fmt.Sprintf("%s/service?grant_type=client_credential&appid=%s&secret=%s", WxCgiApi, conf.AppId, conf.AppSecret)
 		resp, err := client.Get(url)
 		if err == nil {
 			defer resp.Body.Close()
@@ -50,7 +49,7 @@ var ticketMap sync.Map
 
 func GetTicket(appId ...string) wx.Ticket {
 	accessToken := GetAccessToken(appId...)
-	conf := rtype.GetWxsConfig(appId...)
+	conf := wx.GetWxsConfig(appId...)
 	tk, ok := ticketMap.Load(conf)
 	tick := tk.(wx.Ticket)
 	if !ok || tick.CreateTime.Unix()+tick.ExpiresIn <= time.Now().Unix() {

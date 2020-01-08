@@ -7,9 +7,9 @@ import (
 	"html/template"
 	"wx-server/config"
 	"wx-server/rlog"
-	"wx-server/rtype/open"
 	"wx-server/rtype/wx"
-	"wx-server/token"
+	"wx-server/rtype/wx/open"
+	"wx-server/service"
 	"wx-server/util"
 )
 
@@ -91,13 +91,12 @@ func wxOpenEvent() (path string, handle dotweb.HttpHandle) {
 					Encrypt string
 				}
 				_ = xml.Unmarshal(ctx.Request().PostBody(), &encrypt)
-				data, _ = token.BindDecrypt(encrypt.AppId, aesKey, encrypt.Encrypt, &event)
+				data, _ = service.BindDecrypt(encrypt.AppId, aesKey, encrypt.Encrypt, &event)
 			} else {
 				_ = xml.Unmarshal(ctx.Request().PostBody(), &event)
 			}
 			//rlog.WarnF("%s", data)
 			//rlog.WarnF("%+v", event)
-
 			if event.InfoType == open.TypeComponentVerifyTicket {
 				var ticket open.NotifyVerifyTicket
 				_ = xml.Unmarshal(data, &ticket)
@@ -148,7 +147,7 @@ func wxNotifyMsg() (path string, handle dotweb.HttpHandle) {
 					Encrypt    string
 				}
 				_ = xml.Unmarshal(ctx.Request().PostBody(), &encrypt)
-				_, _ = token.BindDecrypt(encrypt.ToUserName, aesKey, encrypt.Encrypt, &msg)
+				_, _ = service.BindDecrypt(encrypt.ToUserName, aesKey, encrypt.Encrypt, &msg)
 			} else {
 				_ = xml.Unmarshal(ctx.Request().PostBody(), &msg)
 			}

@@ -3,6 +3,7 @@ package middleware
 import (
 	"encoding/gob"
 	"github.com/devfeel/dotweb"
+	"wx-server/domain"
 	"wx-server/rtype/wx"
 )
 
@@ -12,7 +13,8 @@ func init() {
 
 type AppSession struct {
 	WxSession  wx.Session
-	WxUserInfo wx.UserInfo
+	CustomerId int
+	Auth       domain.Authority
 	ctx        dotweb.Context
 }
 

@@ -5,6 +5,7 @@ import (
 	"github.com/devfeel/dotweb"
 	"github.com/devfeel/dotweb/session"
 	"log"
+	"time"
 	"wx-server/config"
 	"wx-server/rlog"
 	"wx-server/router"
@@ -13,6 +14,7 @@ import (
 
 func init() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Llongfile | log.Lmicroseconds)
+	time.Local, _ = time.LoadLocation("Asia/Shanghai")
 }
 
 func main() {

@@ -13,12 +13,11 @@ func init() {
 }
 
 type ID struct {
-	Id  int         `json:"id" xorm:"not null pk autoincr unique INT(11)" info:"id"`
-	Ext interface{} `xorm:"-" json:"ext,omitempty" info:"扩展字段"`
+	Id int `json:"id" xorm:"not null pk autoincr unique INT(11)" info:"id"`
 }
 
 type BaseTime struct {
-	CreateTime time.Time `json:"createTime" xorm:"DATETIME  default current_timestamp " info:"创建时间"`
+	CreateTime time.Time `json:"createTime" xorm:"DATETIME  created " info:"创建时间"`
 	UpdateTime time.Time `json:"updateTime" xorm:"DATETIME  updated " info:"更新时间"`
 }
 

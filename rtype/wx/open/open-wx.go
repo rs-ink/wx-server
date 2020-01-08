@@ -112,6 +112,7 @@ func GetComponentAccessToken() AccessToken {
 				 "component_verify_ticket": "%v"
 				}`, config.Cfg().WxOpen.AppId, config.Cfg().WxOpen.AppSecret, GetCurrentNotifyVerifyTicket().ComponentVerifyTicket))
 		var token AccessToken
+		rlog.WarnF("%s", data)
 		data, err := PostWx(fmt.Sprintf("%s/component/api_component_token", WxCgiApi), data, &token)
 		if err == nil {
 			token.CreateTime = time.Now()
@@ -124,7 +125,6 @@ func GetComponentAccessToken() AccessToken {
 			rlog.ErrorF("%s", data)
 		}
 	}
-
 	return currentAccessToken
 }
 

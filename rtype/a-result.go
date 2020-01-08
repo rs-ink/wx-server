@@ -16,7 +16,7 @@ type Result struct {
 
 func Success() *Result {
 	return &Result{
-		Msg: "接口调用成功",
+		Msg: "SUCCESS",
 	}
 }
 func Error(code ErrCode, msg string) *Result {

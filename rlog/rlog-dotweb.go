@@ -4,7 +4,7 @@ import "github.com/rs-ink/rslog"
 
 func NewRAppLog() (logger *RAppLog) {
 	logger = &RAppLog{
-		log: rslog.NewRsLog(true),
+		log: rslog.NewRsLog(false),
 	}
 	logger.log.SetProjectName(ProjectName)
 	return

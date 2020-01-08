@@ -46,19 +46,19 @@ func ExitsOrPrefixExits(slice []string, key string) bool {
 
 var loc *time.Location
 
-const DefaultTimeFormate = "2006-01-02 15:04:05"
-const DefaultDateFormate = "2006-01-02"
+const DefaultTimeFormat = "2006-01-02 15:04:05"
+const DefaultDateFormat = "2006-01-02"
 
 func init() {
 	loc, _ = time.LoadLocation("Local")
 }
 
 func GetCurrentDateStr() string {
-	return time.Now().Format(DefaultDateFormate)
+	return time.Now().Format(DefaultDateFormat)
 }
 
 func ParseTime(timeStr string) (t time.Time, err error) {
-	return time.Parse(DefaultTimeFormate, timeStr)
+	return time.Parse(DefaultTimeFormat, timeStr)
 }
 
 func CreateRandomString(len int) string {

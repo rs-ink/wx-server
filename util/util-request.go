@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 	"wx-server/rlog"
-	"wx-server/rtype"
 )
 
 func BindUrlParams(uri string, value interface{}) error {
@@ -53,10 +52,6 @@ func GetProto(ctx dotweb.Context) (proto string) {
 	}
 	proto = strings.ToLower(proto)
 	return
-}
-
-func GetAppId(ctx dotweb.Context) string {
-	return rtype.GetWxsConfig().AppId
 }
 
 func RedirectToForWxCode(ctx dotweb.Context, appId string, values ...url.Values) error {

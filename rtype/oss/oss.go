@@ -48,7 +48,7 @@ func CreateWxOssSign() (token WxToken) {
 	//p := NewPolicy().AddStatement(*s)
 	//dd, _ := json.Marshal(p)
 	policyText := `{
-    "expiration": "2020-01-01T12:00:00.000Z", 
+    "expiration": "` + time.Now().Add(time.Hour).Format("2006-01-02T15:04:05.999Z") + `", 
     "conditions": [
     ["content-length-range", 0, 1048576000] 
     ]

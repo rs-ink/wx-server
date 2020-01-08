@@ -1,4 +1,4 @@
-package SnowflakeId
+package snowflakeId
 
 import (
 	"github.com/sony/sonyflake"

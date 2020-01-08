@@ -3,8 +3,8 @@ package middleware
 import (
 	"github.com/devfeel/dotweb"
 	"wx-server/rlog"
-	"wx-server/rtype"
-	"wx-server/token"
+	"wx-server/rtype/wx"
+	"wx-server/service"
 	"wx-server/util"
 )
 
@@ -18,16 +18,17 @@ type WxLoginMiddleware struct {
 
 func (wxm WxLoginMiddleware) Handle(ctx dotweb.Context) error {
 	//TODO 用于兼容多公众号授权
-	conf := rtype.GetWxsConfig()
+	conf := wx.GetWxsConfig()
 	appSession := GetAppSession(ctx)
 	rlog.WarnF("%+v", appSession.WxSession)
-	rlog.WarnF("%+v", appSession.WxUserInfo)
+	rlog.WarnF("customerId=%v", appSession.CustomerId)
+	rlog.WarnF("%+v", appSession.Auth)
 	if appSession.WxSession.OpenId == "" {
 		code := ctx.QueryString("code")
 		if code == "" {
 			return util.RedirectToForWxCode(ctx, conf.AppId)
 		} else {
-			session, _ := token.GetWxSession(code, conf)
+			session, _ := service.GetWxSession(code, conf)
 			//40029 无效的 oauth_code
 			//40163	oauth_code已使用
 			if session.ErrCode == 40163 || session.ErrCode == 40029 {
@@ -35,9 +36,8 @@ func (wxm WxLoginMiddleware) Handle(ctx dotweb.Context) error {
 			}
 			appSession.WxSession = session
 			rlog.WarnF("%+v", session)
-			wxInfo, _ := token.GetWxInfo(conf, session)
+			wxInfo, _ := service.GetWxInfo(conf, session)
 			rlog.WarnF("%+v", wxInfo)
-			appSession.WxUserInfo = wxInfo
 			_ = appSession.Update()
 		}
 	}

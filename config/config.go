@@ -16,6 +16,9 @@ type Config struct {
 		Views  string `yaml:"views"`
 		Assets string `yaml:"assets"`
 	}
+	Sql struct {
+		MaxPageSize int `yaml:"maxPageSize"`
+	}
 	Mysql struct {
 		User         string `yaml:"user"`
 		Pwd          string `yaml:"pwd"`
@@ -40,11 +43,13 @@ type Config struct {
 		AppSecret string `yaml:"appSecret"`
 	}
 	WxOpen struct {
-		AppId     string `yaml:"appId"`
-		AppSecret string `yaml:"appSecret"`
+		AppId          string `yaml:"appId"`
+		AppSecret      string `yaml:"appSecret"`
+		ComponentPhone string `yaml:"componentPhone"`
 	}
 	WxMap struct {
-		Key string `yaml:"key"`
+		Key     string `yaml:"key"`
+		Referer string `yaml:"referer"`
 	}
 	Oss struct {
 		Domain          string `yaml:"domain"`

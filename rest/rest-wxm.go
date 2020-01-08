@@ -6,12 +6,11 @@ import (
 	"wx-server/rlog"
 	"wx-server/rtype"
 	"wx-server/rtype/wx"
-	"wx-server/token"
+	"wx-server/service"
 )
 
 func initWxmRest(group dotweb.Group) {
 	g := group.Group("/wxm")
-
 	g.POST(code())
 	g.POST(info())
 }
@@ -26,7 +25,7 @@ func info() (path string, handle dotweb.HttpHandle) {
 		rlog.Warn(string(ctx.Request().PostBody()))
 		_ = ctx.BindJsonBody(&param)
 		appSession := middleware.GetAppSession(ctx)
-		result, err := token.Decrypt(appSession.WxSession, param.EncryptedData)
+		result, err := service.Decrypt(appSession.WxSession, param.EncryptedData)
 		rlog.Warn(result, err)
 
 		return ctx.WriteJson(rtype.Success())
@@ -42,13 +41,15 @@ func code() (path string, handle dotweb.HttpHandle) {
 		}
 		rlog.Warn(string(ctx.Request().PostBody()))
 
-		wxm := rtype.GetWxmConfig()
+		wxm := wx.GetWxmConfig()
 		_ = ctx.BindJsonBody(&param)
 		if param.Code != "" {
-			mis, _ := token.GetWxSession(param.Code, wxm)
+			mis, _ := service.GetWxSession(param.Code, wxm)
 			rlog.WarnF("%+v", mis)
+			return ctx.WriteJson(rtype.Success())
+		} else {
+			panic(rtype.ErrCodeParamsError.Result().SetMsg("参数异常"))
 		}
-		return ctx.WriteJson(rtype.Success())
 	}
 	return
 }

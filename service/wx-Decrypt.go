@@ -1,4 +1,4 @@
-package token
+package service
 
 import (
 	"bytes"
@@ -16,13 +16,12 @@ import (
 	"strconv"
 	"time"
 	"wx-server/rlog"
-	"wx-server/rtype"
 	"wx-server/rtype/wx"
 	"wx-server/util"
 )
 
-func JsSignature(url string, appId ...string) (sign wx.JsSignature) {
-	wxs := rtype.GetWxsConfig(appId...)
+func JsSignatureUrl(url string, appId ...string) (sign wx.JsSignature) {
+	wxs := wx.GetWxsConfig(appId...)
 	sign.AppId = wxs.AppId
 	sign.SignType = "SHA1"
 	sign.NonceStr = util.CreateRandomString(32)

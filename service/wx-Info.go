@@ -1,4 +1,4 @@
-package token
+package service
 
 import (
 	"encoding/json"
@@ -9,7 +9,6 @@ import (
 	"time"
 	"wx-server/config"
 	"wx-server/rlog"
-	"wx-server/rtype"
 	"wx-server/rtype/wx"
 )
 
@@ -36,7 +35,7 @@ func TransferWxLocation(lat, lng float64) (gpsLat, gpsLng float64) {
 }
 
 func CheckRefreshToken(session *wx.Session, appId ...string) {
-	conf := rtype.GetWxsConfig(appId...)
+	conf := wx.GetWxsConfig(appId...)
 	if session.CreateTime.Unix()+int64(session.Expires) <= time.Now().Unix() {
 		resp, err := http.DefaultClient.Get(fmt.Sprintf("https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=%v&grant_type=refresh_token&refresh_token=%v", conf.AppId, session.RefreshToken))
 		if err != nil {
@@ -71,7 +70,7 @@ func GetWxSession(code string, wxc wx.Config) (mis wx.Session, err error) {
 	return
 }
 
-func GetWxInfo(wxConfig wx.Config, wxs wx.Session) (wxInfo wx.UserInfo, err error) {
+func GetWxInfo(wxConfig wx.Config, wxs wx.Session) (wxInfo wx.UserInfoOfficialAccount, err error) {
 	wxInfo, err = getWxInfoByOpenId(wxs.OpenId, wxConfig.AppId)
 	rlog.WarnF("%+v", wxInfo)
 	if err == nil && wxInfo.Subscribe == 0 {
@@ -81,7 +80,7 @@ func GetWxInfo(wxConfig wx.Config, wxs wx.Session) (wxInfo wx.UserInfo, err erro
 }
 
 //网页授权的用户信息
-func getWxInfoBySnsOpenId(wxs wx.Session) (mis wx.UserInfo, err error) {
+func getWxInfoBySnsOpenId(wxs wx.Session) (mis wx.UserInfoOfficialAccount, err error) {
 	var resp *http.Response
 	var data []byte
 	resp, err = client.Get(fmt.Sprintf("%v/userinfo?access_token=%s&openid=%s&lang=zh_CN", WxSnsApi, wxs.AccessToken, wxs.OpenId))
@@ -95,7 +94,7 @@ func getWxInfoBySnsOpenId(wxs wx.Session) (mis wx.UserInfo, err error) {
 }
 
 //获取微信用户详细信息
-func getWxInfoByOpenId(openId string, appId ...string) (mis wx.UserInfo, err error) {
+func getWxInfoByOpenId(openId string, appId ...string) (mis wx.UserInfoOfficialAccount, err error) {
 	at := GetAccessToken(appId...)
 	var resp *http.Response
 	var data []byte

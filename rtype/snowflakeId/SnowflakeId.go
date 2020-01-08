@@ -1,4 +1,4 @@
-package SnowflakeId
+package snowflakeId
 
 import (
 	"github.com/sony/sonyflake"
@@ -7,6 +7,7 @@ import (
 
 var sf *sonyflake.Sonyflake
 
+//TODO 核心配置
 const baseTime = "2019-01-02 15:04:05"
 
 func init() {

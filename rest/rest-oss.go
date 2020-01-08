@@ -10,7 +10,6 @@ func initRestOssRouter(group dotweb.Group) {
 	g := group.Group("/oss")
 
 	g.GET(temp())
-
 	g.POST(tempWx())
 	g.GET(tempWx())
 }

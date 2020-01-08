@@ -5,7 +5,7 @@ import (
 	"github.com/devfeel/dotweb"
 	"wx-server/rlog"
 	"wx-server/rtype/wx"
-	"wx-server/token"
+	"wx-server/service"
 	"wx-server/util"
 )
 
@@ -38,7 +38,7 @@ func (wxm WxNotifyMsgMiddleware) Handle(ctx dotweb.Context) error {
 			Encrypt    string
 		}
 		_ = xml.Unmarshal(ctx.Request().PostBody(), &encrypt)
-		_, _ = token.BindDecrypt(encrypt.ToUserName, aesKey, encrypt.Encrypt, &msg)
+		_, _ = service.BindDecrypt(encrypt.ToUserName, aesKey, encrypt.Encrypt, &msg)
 	} else {
 		_ = xml.Unmarshal(ctx.Request().PostBody(), &msg)
 	}
